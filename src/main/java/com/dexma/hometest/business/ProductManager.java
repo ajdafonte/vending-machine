@@ -1,5 +1,6 @@
 package com.dexma.hometest.business;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -112,9 +113,9 @@ public class ProductManager
         this.selectedProduct = product;
     }
 
-    public double getPriceOfSelectedProduct()
+    public BigDecimal getPriceOfSelectedProduct()
     {
-        return isProductSelected() ? selectedProduct.getPrice() : 0;
+        return isProductSelected() ? selectedProduct.getPrice() : BigDecimal.ZERO;
     }
 
     public void resetSelectedProduct()

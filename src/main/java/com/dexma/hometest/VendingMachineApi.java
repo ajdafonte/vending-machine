@@ -1,5 +1,6 @@
 package com.dexma.hometest;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -80,7 +81,7 @@ public class VendingMachineApi implements VendingMachineUserOperations, VendingM
     }
 
     @Override
-    public double selectProduct(final Product product)
+    public BigDecimal selectProduct(final Product product)
     {
         if (productManager.isProductItemAllowed(product))
         {
@@ -97,7 +98,7 @@ public class VendingMachineApi implements VendingMachineUserOperations, VendingM
     }
 
     @Override
-    public double insertCash(final Cash cash)
+    public BigDecimal insertCash(final Cash cash)
     {
         try
         {
@@ -126,7 +127,7 @@ public class VendingMachineApi implements VendingMachineUserOperations, VendingM
         }
 
         final Product selectedProduct = productManager.getSelectedProduct();
-        final double productPrice = selectedProduct.getPrice();
+        final BigDecimal productPrice = selectedProduct.getPrice();
         final BalanceResult balanceResult = cashManager.isPossibleToPurchaseProduct(productPrice);
         Pair<Product, Map<Cash, Integer>> purchaseResult = null;
         switch (balanceResult)
@@ -145,7 +146,7 @@ public class VendingMachineApi implements VendingMachineUserOperations, VendingM
             case ABOVE_AMOUNT:
             {
                 // more than enough
-                final double changeToRefund = cashManager.calculateRemainingChange(productPrice);
+                final BigDecimal changeToRefund = cashManager.calculateRemainingChange(productPrice);
                 final Map<Cash, Integer> change = cashManager.getCashItemsForChange(changeToRefund);
                 if (change == null)
                 {

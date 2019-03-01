@@ -1,5 +1,6 @@
 package com.dexma.hometest;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -16,9 +17,9 @@ public interface VendingMachineUserOperations
 {
     Map<Cash, Integer> refund();
 
-    double selectProduct(Product product);
+    BigDecimal selectProduct(Product product);
 
-    double insertCash(Cash cash);
+    BigDecimal insertCash(Cash cash);
 
     Pair<Product, Map<Cash, Integer>> confirmPurchase();
 

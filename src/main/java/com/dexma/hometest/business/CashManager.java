@@ -1,5 +1,6 @@
 package com.dexma.hometest.business;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -19,11 +20,11 @@ import com.dexma.hometest.error.ProductManagerException;
 public class CashManager
 {
     private final Stock<Cash> cashStock;
-    private double currentBalance;
+    private BigDecimal currentBalance;
     private final ChangeProcessorFactory changeProcessorFactory;
 
     public CashManager(final Stock<Cash> cashStock,
-                       final double currentBalance,
+                       final BigDecimal currentBalance,
                        final ChangeProcessorFactory changeProcessorFactory)
     {
         this.cashStock = cashStock;
@@ -34,7 +35,7 @@ public class CashManager
     public CashManager()
     {
         this.cashStock = new Stock<>(new HashMap<>());
-        this.currentBalance = 0;
+        this.currentBalance = BigDecimal.ZERO;
         this.changeProcessorFactory = new ChangeProcessorFactory();
     }
 
@@ -109,7 +110,7 @@ public class CashManager
 
     /////////////////////// OTHER FUNCTIONALITIES
 
-    public Map<Cash, Integer> getCashItemsForChange(final double changeToRefund)
+    public Map<Cash, Integer> getCashItemsForChange(final BigDecimal changeToRefund)
     {
         final ChangeProcessor changeProcessor = changeProcessorFactory.getChangeProcessor();
         return changeProcessor.processChange(cashStock.getStockMap(), changeToRefund);
@@ -129,7 +130,7 @@ public class CashManager
         return refund;
     }
 
-    public double receiveCash(final Cash cash)
+    public BigDecimal receiveCash(final Cash cash)
     {
         if (isCashItemAllowed(cash))
         {
@@ -147,45 +148,45 @@ public class CashManager
 
     ///////////////////// CURRENT BALANCE
 
-    public BalanceResult isPossibleToPurchaseProduct(final double productPrice)
+    public BalanceResult isPossibleToPurchaseProduct(final BigDecimal productPrice)
     {
-        return BalanceResult.getBalanceResultByValue(Double.compare(productPrice, getCurrentBalance()));
+        return BalanceResult.getBalanceResultByValue(productPrice.compareTo(currentBalance));
     }
 
-    public double calculateRemainingChange(final double productPrice)
+    public BigDecimal calculateRemainingChange(final BigDecimal productPrice)
     {
-        return getCurrentBalance() - productPrice;
+        return currentBalance.subtract(productPrice);
     }
 
     public boolean hasCurrentBalance()
     {
-        return currentBalance > 0;
+        return currentBalance.compareTo(BigDecimal.ZERO) > 0;
     }
 
-    public double getCurrentBalance()
+    public BigDecimal getCurrentBalance()
     {
         return this.currentBalance;
     }
 
-    private void incrementCurrentBalance(final double amount)
+    private void incrementCurrentBalance(final BigDecimal amount)
     {
-        this.currentBalance += amount;
+        currentBalance = currentBalance.add(amount);
     }
 
-    public void setCurrentBalance(final double currentBalance)
+    public void setCurrentBalance(final BigDecimal currentBalance)
     {
         this.currentBalance = currentBalance;
     }
 
     public void resetCurrentBalance()
     {
-        setCurrentBalance(0);
+        setCurrentBalance(BigDecimal.ZERO);
     }
 
-    private void decrementCurrentBalance(final double amount)
+    private void decrementCurrentBalance(final BigDecimal amount)
     {
-        final double finalValue = this.currentBalance - amount;
-        this.currentBalance = finalValue >= 0 ? finalValue : 0;
+        final BigDecimal finalValue = this.currentBalance.subtract(amount);
+        this.currentBalance = finalValue.compareTo(BigDecimal.ZERO) >= 0 ? finalValue : BigDecimal.ZERO;
     }
 
 }

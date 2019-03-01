@@ -1,5 +1,8 @@
 package com.dexma.hometest.domain;
 
+import java.math.BigDecimal;
+
+
 /**
  *
  */
@@ -14,9 +17,9 @@ public enum Beverage implements Product
             }
 
             @Override
-            public double getPrice()
+            public BigDecimal getPrice()
             {
-                return 1.5;
+                return BigDecimal.valueOf(1.5);
             }
         },
     SPRITE
@@ -28,9 +31,9 @@ public enum Beverage implements Product
             }
 
             @Override
-            public double getPrice()
+            public BigDecimal getPrice()
             {
-                return 1.4;
+                return BigDecimal.valueOf(1.4);
             }
         },
     WATER
@@ -42,9 +45,9 @@ public enum Beverage implements Product
             }
 
             @Override
-            public double getPrice()
+            public BigDecimal getPrice()
             {
-                return 0.9;
+                return BigDecimal.valueOf(0.9);
             }
         };
 

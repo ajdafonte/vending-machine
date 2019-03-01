@@ -1,5 +1,8 @@
 package com.dexma.hometest.domain;
 
+import java.math.BigDecimal;
+
+
 /**
  *
  */
@@ -8,49 +11,49 @@ public enum Coin implements Cash
     FIVE_CENTS
         {
             @Override
-            public double getValue()
+            public BigDecimal getValue()
             {
-                return 0.05;
+                return BigDecimal.valueOf(0.05);
             }
         },
     TEN_CENTS
         {
             @Override
-            public double getValue()
+            public BigDecimal getValue()
             {
-                return 0.1;
+                return BigDecimal.valueOf(0.1);
             }
         },
     TWENTY_CENTS
         {
             @Override
-            public double getValue()
+            public BigDecimal getValue()
             {
-                return 0.2;
+                return BigDecimal.valueOf(0.2);
             }
         },
     FIFTY_CENTS
         {
             @Override
-            public double getValue()
+            public BigDecimal getValue()
             {
-                return 0.5;
+                return BigDecimal.valueOf(0.5);
             }
         },
     ONE
         {
             @Override
-            public double getValue()
+            public BigDecimal getValue()
             {
-                return 1;
+                return BigDecimal.valueOf(1);
             }
         },
     TWO
         {
             @Override
-            public double getValue()
+            public BigDecimal getValue()
             {
-                return 2;
+                return BigDecimal.valueOf(2);
             }
         };
 
@@ -58,5 +61,5 @@ public enum Coin implements Cash
     {
         return Coin.values();
     }
-    
+
 }
