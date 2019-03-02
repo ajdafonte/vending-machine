@@ -25,14 +25,14 @@ public class VendingMachineApi implements VendingMachineUserOperations, VendingM
     private final ProductManager productManager;
     private final CashManager cashManager;
 
-    public VendingMachineApi(final ProductManager productManager, final CashManager cashManager)
+    VendingMachineApi(final ProductManager productManager, final CashManager cashManager)
     {
         this.productManager = productManager;
         this.cashManager = cashManager;
     }
 
     @Override
-    public void refillProducts(final Map<Product, Integer> productMap)
+    public void refillProducts(final Map<Product, Integer> productMap) throws VendingMachineException
     {
         try
         {
@@ -45,13 +45,13 @@ public class VendingMachineApi implements VendingMachineUserOperations, VendingM
     }
 
     @Override
-    public void refillCash(final Map<Cash, Integer> cashMap)
+    public void refillCash(final Map<Cash, Integer> cashMap) throws VendingMachineException
     {
         try
         {
             cashManager.insertCashItemsInStock(cashMap);
         }
-        catch (final ProductManagerException ex)
+        catch (final CashManagerException ex)
         {
             throw new VendingMachineException(ex.getMessage(), ex);
         }
@@ -83,14 +83,14 @@ public class VendingMachineApi implements VendingMachineUserOperations, VendingM
     @Override
     public BigDecimal selectProduct(final Product product)
     {
-        if (productManager.isProductItemAllowed(product))
+        if (!productManager.isProductItemAllowed(product))
         {
-            throw new VendingMachineException("A valid product item should be provided");
+            throw new VendingMachineException("A valid product item should be provided.");
         }
 
-        if (productManager.isProductItemAvailable(product))
+        if (!productManager.isProductItemAvailable(product))
         {
-            throw new VendingMachineException("Product " + product + " is not available in stock");
+            throw new VendingMachineException("Product " + product + " is not available in stock.");
         }
 
         productManager.setSelectedProduct(product);
@@ -98,7 +98,7 @@ public class VendingMachineApi implements VendingMachineUserOperations, VendingM
     }
 
     @Override
-    public BigDecimal insertCash(final Cash cash)
+    public BigDecimal insertCash(final Cash cash) throws VendingMachineException
     {
         try
         {
@@ -106,7 +106,7 @@ public class VendingMachineApi implements VendingMachineUserOperations, VendingM
         }
         catch (final CashManagerException e)
         {
-            throw new VendingMachineException("A valid cash item should be provided");
+            throw new VendingMachineException("A valid cash item should be provided.");
         }
 
         // OR
@@ -121,9 +121,9 @@ public class VendingMachineApi implements VendingMachineUserOperations, VendingM
     @Override
     public Pair<Product, Map<Cash, Integer>> confirmPurchase()
     {
-        if (productManager.isProductSelected())
+        if (!productManager.isProductSelected())
         {
-            throw new VendingMachineException("Before confirm a purchase one product should be selected first");
+            throw new VendingMachineException("Before confirm a purchase one product should be selected first.");
         }
 
         final Product selectedProduct = productManager.getSelectedProduct();
@@ -135,7 +135,7 @@ public class VendingMachineApi implements VendingMachineUserOperations, VendingM
             case BELOW_AMOUNT:
             {
                 // not enough money
-                throw new VendingMachineException("Current balance is not enough to buy Product " + selectedProduct.getName());
+                throw new VendingMachineException("Current balance is not enough to buy Product " + selectedProduct.getName() + ".");
             }
             case EXACT_AMOUNT:
             {
@@ -150,7 +150,7 @@ public class VendingMachineApi implements VendingMachineUserOperations, VendingM
                 final Map<Cash, Integer> change = cashManager.getCashItemsForChange(changeToRefund);
                 if (change == null)
                 {
-                    throw new VendingMachineException(" Not sufficient change to provide");
+                    throw new VendingMachineException("Not sufficient change to provide.");
                 }
                 purchaseResult = createPurchaseResponse(selectedProduct, change);
                 break;
