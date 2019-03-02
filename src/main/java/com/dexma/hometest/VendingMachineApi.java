@@ -31,6 +31,10 @@ public class VendingMachineApi implements VendingMachineUserOperations, VendingM
         this.cashManager = cashManager;
     }
 
+    /***
+     * Supplier operations
+     */
+
     @Override
     public void refillProducts(final Map<Product, Integer> productMap) throws VendingMachineException
     {
@@ -68,6 +72,10 @@ public class VendingMachineApi implements VendingMachineUserOperations, VendingM
     {
         return cashManager.getCashStock();
     }
+
+    /***
+     * User operations
+     */
 
     @Override
     public Map<Cash, Integer> refund()
