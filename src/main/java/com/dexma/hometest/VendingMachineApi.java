@@ -18,7 +18,7 @@ import javafx.util.Pair;
 
 
 /**
- *
+ * VendingMachineApi class - Contains the implementation of all the user and supplier operations in a Vending Machine.
  */
 public class VendingMachineApi implements VendingMachineUserOperations, VendingMachineSupplierOperations
 {
@@ -36,7 +36,7 @@ public class VendingMachineApi implements VendingMachineUserOperations, VendingM
     {
         try
         {
-            productManager.insertProductsInStock(productMap);
+            productManager.insertProductItemsInStock(productMap);
         }
         catch (final ProductManagerException ex)
         {
@@ -90,7 +90,7 @@ public class VendingMachineApi implements VendingMachineUserOperations, VendingM
 
         if (!productManager.isProductItemAvailable(product))
         {
-            throw new VendingMachineException("Product " + product + " is not available in stock.");
+            throw new VendingMachineException("Product " + product.getName() + " is not available in stock.");
         }
 
         productManager.setSelectedProduct(product);
@@ -108,14 +108,6 @@ public class VendingMachineApi implements VendingMachineUserOperations, VendingM
         {
             throw new VendingMachineException("A valid cash item should be provided.");
         }
-
-        // OR
-//        if (cashManager.isCashItemAllowed(cash))
-//        {
-//            throw new VendingMachineException("A valid cash item should be provided");
-//        }
-//
-//        return cashManager.receiveCash(cash);
     }
 
     @Override
@@ -160,17 +152,6 @@ public class VendingMachineApi implements VendingMachineUserOperations, VendingM
         return purchaseResult;
     }
 
-    private Pair<Product, Map<Cash, Integer>> createPurchaseResponse(final Product selectedProduct, final Map<Cash, Integer> change)
-    {
-        final Pair<Product, Map<Cash, Integer>> purchaseResult;
-        productManager.removeProductItemFromStock(selectedProduct);
-        productManager.resetSelectedProduct();
-        cashManager.removeCashItemsFromStock(change);
-        cashManager.resetCurrentBalance();
-        purchaseResult = new Pair<>(selectedProduct, change);
-        return purchaseResult;
-    }
-
     @Override
     public List<Cash> getAllowedCashItems()
     {
@@ -181,5 +162,16 @@ public class VendingMachineApi implements VendingMachineUserOperations, VendingM
     public List<Product> getAvailableProducts()
     {
         return productManager.getAvailableProducts();
+    }
+
+    private Pair<Product, Map<Cash, Integer>> createPurchaseResponse(final Product selectedProduct, final Map<Cash, Integer> change)
+    {
+        final Pair<Product, Map<Cash, Integer>> purchaseResult;
+        productManager.removeProductItemFromStock(selectedProduct);
+        productManager.resetSelectedProduct();
+        cashManager.removeCashItemsFromStock(change);
+        cashManager.resetCurrentBalance();
+        purchaseResult = new Pair<>(selectedProduct, change);
+        return purchaseResult;
     }
 }

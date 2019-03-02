@@ -1,7 +1,7 @@
 package com.dexma.hometest.domain;
 
 /**
- *
+ * BalanceResult enum - Describes the possible results to confirm if a certain product can be purchased.
  */
 public enum BalanceResult
 {

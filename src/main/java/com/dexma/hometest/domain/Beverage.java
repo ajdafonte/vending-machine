@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 
 /**
- *
+ * Beverage enum - Describes and contains details about Beverages that can be sold.
  */
 public enum Beverage implements Product
 {

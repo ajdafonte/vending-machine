@@ -48,12 +48,6 @@ class GreedyChangeProcessorTest
         return values;
     }
 
-//    private Stock<Cash> generateCashStock(final Map<Cash, Integer> values)
-//    {
-//        return new Stock<>(values);
-//    }
-
-    // test - cash stock with enough cash and valid changeAmount -- return change (other case)
     // test - cash stock with enough cash and valid changeAmount -- return change (other case)
     @Test
     void givenCashStockAndHighAmount_whenProcessChange_thenReturnCollectionWithCashAndQuantity()

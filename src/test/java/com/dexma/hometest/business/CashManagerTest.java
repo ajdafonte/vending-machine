@@ -48,9 +48,6 @@ class CashManagerTest
     private Stock<Cash> mockCashStock;
 
     @Mock
-    private BigDecimal mockCurrentBalance;
-
-    @Mock
     private ChangeProcessorFactory mockChangeProcessorFactory;
 
     @Mock
@@ -123,12 +120,13 @@ class CashManagerTest
     {
         // given
         final Map[] testCases = new Map[] {null, Collections.emptyMap()};
+        final String expectedMsg = "At least one cash item should be provided.";
 
         // when + then
         for (final Map testCase : testCases)
         {
             final CashManagerException thrown = assertThrows(CashManagerException.class, () -> cashManager.insertCashItemsInStock(testCase));
-            assertEquals(thrown.getMessage(), "At least one cash item should be provided.");
+            assertEquals(expectedMsg, thrown.getMessage());
         }
     }
 
@@ -140,10 +138,11 @@ class CashManagerTest
         final Map<Cash, Integer> mockMap = new HashMap<>();
         mockMap.put(Coin.TWO, 1);
         mockMap.put(null, 1);
+        final String expectedMsg = "Invalid cash item specified.";
 
         // when + then
         final CashManagerException thrown = assertThrows(CashManagerException.class, () -> cashManager.insertCashItemsInStock(mockMap));
-        assertEquals(thrown.getMessage(), "Invalid cash item specified.");
+        assertEquals(expectedMsg, thrown.getMessage());
     }
 
     // - map with invalid quantity
@@ -154,10 +153,11 @@ class CashManagerTest
         final Map<Cash, Integer> mockMap = new HashMap<>();
         mockMap.put(Coin.TWO, -1);
         mockMap.put(Coin.TEN_CENTS, 1);
+        final String expectedMsg = "Invalid quantity specified.";
 
         // when + then
         final CashManagerException thrown = assertThrows(CashManagerException.class, () -> cashManager.insertCashItemsInStock(mockMap));
-        assertEquals(thrown.getMessage(), "Invalid quantity specified.");
+        assertEquals(expectedMsg, thrown.getMessage());
     }
 
     // - map with all ok
@@ -183,12 +183,13 @@ class CashManagerTest
     {
         // given
         final Map[] testCases = new Map[] {null, Collections.emptyMap()};
+        final String expectedMsg = "At least one cash item should be provided.";
 
         // when + then
         for (final Map testCase : testCases)
         {
             final CashManagerException thrown = assertThrows(CashManagerException.class, () -> cashManager.removeCashItemsFromStock(testCase));
-            assertEquals(thrown.getMessage(), "At least one cash item should be provided.");
+            assertEquals(expectedMsg, thrown.getMessage());
         }
     }
 
@@ -200,10 +201,11 @@ class CashManagerTest
         final Map<Cash, Integer> mockMap = new HashMap<>();
         mockMap.put(Coin.TWO, 1);
         mockMap.put(null, 1);
+        final String expectedMsg = "Invalid cash item specified.";
 
         // when + then
         final CashManagerException thrown = assertThrows(CashManagerException.class, () -> cashManager.removeCashItemsFromStock(mockMap));
-        assertEquals(thrown.getMessage(), "Invalid cash item specified.");
+        assertEquals(expectedMsg, thrown.getMessage());
     }
 
     // - map with invalid quantity
@@ -214,10 +216,11 @@ class CashManagerTest
         final Map<Cash, Integer> mockMap = new HashMap<>();
         mockMap.put(Coin.TWO, -1);
         mockMap.put(Coin.TEN_CENTS, 1);
+        final String expectedMsg = "Invalid quantity specified.";
 
         // when + then
         final CashManagerException thrown = assertThrows(CashManagerException.class, () -> cashManager.removeCashItemsFromStock(mockMap));
-        assertEquals(thrown.getMessage(), "Invalid quantity specified.");
+        assertEquals(expectedMsg, thrown.getMessage());
     }
 
     // - map with all ok
@@ -321,7 +324,7 @@ class CashManagerTest
         assertThat(result, is(expectedResult));
         assertThat(result.size(), is(expectedResult.size()));
         assertThat(result, IsMapContaining.hasEntry(expectedItem, expectedQuantity));
-        assertEquals(cashManager.getCurrentBalance(), BigDecimal.ZERO);
+        assertEquals(BigDecimal.ZERO, cashManager.getCurrentBalance());
     }
 
     // - cash balance not positive
@@ -341,7 +344,7 @@ class CashManagerTest
         // then
         verify(mockGreedyChangeProcessor, times(1)).processChange(MOCK_CASH_STOCK_MAP, mockValue);
         assertNull(result);
-        assertEquals(cashManager.getCurrentBalance(), BigDecimal.ZERO);
+        assertEquals(BigDecimal.ZERO, cashManager.getCurrentBalance());
     }
 
     // receiveCash
@@ -372,11 +375,12 @@ class CashManagerTest
         final Cash mockCash = null;
         final BigDecimal mockValue = BigDecimal.valueOf(1);
         cashManager.setCurrentBalance(mockValue);
+        final String expectedMsg = "A valid cash item should be provided.";
 
         // when + then
         verify(mockCashStock, times(0)).insertItem(any(Cash.class));
         final CashManagerException thrown = assertThrows(CashManagerException.class, () -> cashManager.receiveCash(mockCash));
-        assertEquals("A valid cash item should be provided.", thrown.getMessage());
+        assertEquals(expectedMsg, thrown.getMessage());
     }
 
     // isPossibleToPurchaseProduct
@@ -435,10 +439,11 @@ class CashManagerTest
         // given
         cashManager.setCurrentBalance(BigDecimal.valueOf(0.90));
         final BigDecimal mockProductPrice = null;
+        final String expectedMsg = "Invalid product price.";
 
         // when + then
-        final CashManagerException e = assertThrows(CashManagerException.class, () -> cashManager.isPossibleToPurchaseProduct(mockProductPrice));
-        assertEquals(e.getMessage(), "Invalid product price.");
+        final CashManagerException thrown = assertThrows(CashManagerException.class, () -> cashManager.isPossibleToPurchaseProduct(mockProductPrice));
+        assertEquals(expectedMsg, thrown.getMessage());
     }
 
     // calculateRemainingChange
@@ -481,10 +486,11 @@ class CashManagerTest
         // given
         cashManager.setCurrentBalance(BigDecimal.ONE);
         final BigDecimal mockProductPrice = null;
+        final String expectedMsg = "Invalid product price.";
 
         // when + then
         final CashManagerException thrown = assertThrows(CashManagerException.class, () -> cashManager.calculateRemainingChange(mockProductPrice));
-        assertEquals(thrown.getMessage(), "Invalid product price.");
+        assertEquals(expectedMsg, thrown.getMessage());
     }
 
     // hasCurrentBalance

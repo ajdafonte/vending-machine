@@ -4,7 +4,7 @@ import java.util.Map;
 
 
 /**
- * Remark: This wrapper does not allow null keys ?? think
+ * Stock class - A wrapper over Map to create a "Stock" that allows to hold cash and product items (key) with a certain integer quantity (value).
  */
 public class Stock<T>
 {
@@ -14,11 +14,6 @@ public class Stock<T>
     {
         this.stockMap = stockMap;
     }
-
-//    public boolean isStockItemAllowed(final T item)
-//    {
-//        return item != null && stockMap.containsKey(item);
-//    }
 
     T getItem(final T item)
     {
@@ -63,20 +58,10 @@ public class Stock<T>
         return stockMap;
     }
 
-//    public void clearAllItems()
-//    {
-//        stockMap.clear();
-//    }
-
     private int getQuantity(final T item)
     {
         final Integer quantity = stockMap.get(item);
         return quantity == null ? 0 : quantity;
     }
-
-//    public void putItem(final T item, final int quantity)
-//    {
-//        stockMap.put(item, quantity);
-//    }
 
 }

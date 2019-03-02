@@ -10,7 +10,7 @@ import com.dexma.hometest.domain.Cash;
 
 
 /**
- *
+ * GreedyChangeProcessor class - Implements a greedy strategy to process change.
  */
 public class GreedyChangeProcessor implements ChangeProcessor
 {
@@ -19,11 +19,10 @@ public class GreedyChangeProcessor implements ChangeProcessor
     {
         if (isValid(cashStock) && isValid(amount))
         {
-            // Need to have stock of cash sorted in descending order (from biggest to smallest)
+            // need to have stock of cash sorted in descending order (from biggest to smallest)
             final TreeMap<Cash, Integer> treeMap = new TreeMap<>(Comparator.comparing(Cash::getValue).reversed());
             treeMap.putAll(cashStock);
 
-            System.out.println("Coin to Change: " + amount);
             final Map<Cash, Integer> change = new HashMap<>();
             for (final Map.Entry<Cash, Integer> entry : treeMap.entrySet())
             {
@@ -33,21 +32,20 @@ public class GreedyChangeProcessor implements ChangeProcessor
                 Integer quantity = entry.getValue();
                 while (cashValue.compareTo(amount) <= 0 && quantity > 0)
                 {
-                    System.out.print("Change: " + amount + " - " + cashItem);
+//                    System.out.print("Change: " + amount + " - " + cashItem);
                     amount = amount.subtract(cashValue);
-                    System.out.print(" = " + amount + "\n");
+//                    System.out.print(" = " + amount + "\n");
                     change.put(cashItem, ++cnt);
                     quantity--;
                 }
 
-                if (amount.compareTo(BigDecimal.ZERO) == 0)        // no need of extra iterations
+                // no need for more iterations
+                if (amount.compareTo(BigDecimal.ZERO) == 0)
                 {
                     break;
                 }
             }
 
-            // check if change calculated if enough -- with value of amount if not zero
-            System.out.println("Min No. of Coins: " + change.size() + "" + change);
             return amount.compareTo(BigDecimal.ZERO) == 0 ? change : null;
         }
         return null;

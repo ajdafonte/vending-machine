@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 
 /**
- *
+ * Coin enum - Describes and contains details about allowed Coins.
  */
 public enum Coin implements Cash
 {

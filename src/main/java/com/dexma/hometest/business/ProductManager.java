@@ -13,23 +13,21 @@ import com.dexma.hometest.error.ProductManagerException;
 
 
 /**
- *
+ * ProductManager class - Contains all the operations product related in the vending machine.
  */
 public class ProductManager
 {
     private final Stock<Product> productStock;
     private Product selectedProduct;
 
-//    ProductManager(final Stock<Product> productStock, final Product selectedProduct)
-//    {
-//        this.productStock = productStock;
-//        this.selectedProduct = selectedProduct;
-//    }
-
     public ProductManager(final Stock<Product> productStock)
     {
         this.productStock = productStock;
     }
+
+    /***
+     * Cash stock related operations
+     */
 
     public boolean isProductItemAllowed(final Product product)
     {
@@ -48,39 +46,18 @@ public class ProductManager
             .collect(Collectors.toList());
     }
 
-    private List<Product> getValidProductItems()
-    {
-        return Arrays.asList(Beverage.getValidBeverages());
-    }
-
     public Map<Product, Integer> getProductStock()
     {
         return productStock.getStockMap();
     }
 
-    //// TO CHECK
-
-    private void validateProductEntry(final Product product, final int quantity)
-    {
-        if (!isProductItemAllowed(product))
-        {
-            throw new ProductManagerException("Invalid product specified.");
-        }
-
-        if (quantity <= 0)
-        {
-            throw new ProductManagerException("Invalid quantity specified.");
-        }
-    }
-
-    public void insertProductsInStock(final Map<Product, Integer> productMap)
+    public void insertProductItemsInStock(final Map<Product, Integer> productMap)
     {
         if (productMap == null || productMap.isEmpty())
         {
             throw new ProductManagerException("At least one valid product should be provided.");
         }
 
-        //
         for (final Map.Entry<Product, Integer> entry : productMap.entrySet())
         {
             final Product productToAdd = entry.getKey();
@@ -99,12 +76,27 @@ public class ProductManager
         productStock.deleteItem(product);
     }
 
-//    public Product getProductFromStock(final Product product)
-//    {
-//        return productStock.getItem(product);
-//    }
+    private List<Product> getValidProductItems()
+    {
+        return Arrays.asList(Beverage.getValidBeverages());
+    }
 
-    ///////////////////// SELECTED PRODUCT
+    private void validateProductEntry(final Product product, final int quantity)
+    {
+        if (!isProductItemAllowed(product))
+        {
+            throw new ProductManagerException("Invalid product specified.");
+        }
+
+        if (quantity <= 0)
+        {
+            throw new ProductManagerException("Invalid quantity specified.");
+        }
+    }
+
+    /***
+     * Selected product related operations
+     */
 
     public void setSelectedProduct(final Product product)
     {

@@ -1,7 +1,7 @@
 package com.dexma.hometest.error;
 
 /**
- *
+ * VendingMachineException exception - Generic VendingMachine exception.
  */
 public class VendingMachineException extends RuntimeException
 {

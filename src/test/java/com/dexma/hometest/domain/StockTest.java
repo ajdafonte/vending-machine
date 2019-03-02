@@ -27,7 +27,6 @@ class StockTest
     private static final int MOCK_QUANTITY1 = 1;
     private static final int MOCK_QUANTITY2 = 2;
     private static final int MOCK_EMPTY_QUANTITY = 0;
-    private static Map<String, Integer> MOCK_STOCK_MAP;
 
     private static Stock<String> MOCK_STOCK;
 
@@ -57,8 +56,7 @@ class StockTest
     @Test
     void givenExistentItem_whenGetItem_thenReturnExpectedItem()
     {
-//        // given
-//        final Stock<String> MOCK_STOCK =
+        // given
 
         // when + then
         assertEquals(MOCK_ITEM1, MOCK_STOCK.getItem(MOCK_ITEM1));
@@ -70,7 +68,6 @@ class StockTest
     void givenNotExistentItem_whenGetItem_thenReturnNullValue()
     {
         // given
-//        final Stock<String> MOCK_STOCK = new Stock<>(MOCK_STOCK_MAP);
 
         // when + then
         assertNull(MOCK_STOCK.getItem(MOCK_UNKNOWN_ITEM));
@@ -81,7 +78,6 @@ class StockTest
     void givenInvalidItem_whenGetItem_thenReturnNullValue()
     {
         // given
-//        final Stock<String> MOCK_STOCK = new Stock<>(MOCK_STOCK_MAP);
 
         // when + then
         assertNull(MOCK_STOCK.getItem(null));
@@ -92,7 +88,6 @@ class StockTest
     void givenNewItem_whenInsertItem_thenExpectNewItemInserted()
     {
         // given
-//        final Stock<String> MOCK_STOCK = new Stock<>(MOCK_STOCK_MAP);
 
         // when
         MOCK_STOCK.insertItem(MOCK_ITEM3);
@@ -107,7 +102,6 @@ class StockTest
     void givenExistentItem_whenInsertItem_thenExpectExistentItemWithQuantityIncremented()
     {
         // given
-//        final Stock<String> MOCK_STOCK = new Stock<>(MOCK_STOCK_MAP);
         final int expectedQuantity = MOCK_QUANTITY1 + 1;
 
         // when
@@ -123,7 +117,6 @@ class StockTest
     void givenExistentItem_whenInsertItemWithSeveralQuantity_thenExpectExistentItemWithRespectiveQuantityIncremented()
     {
         // given
-//        final Stock<String> MOCK_STOCK = new Stock<>(MOCK_STOCK_MAP);
         final int mockQuantityToIncrease = 4;
         final int expectedQuantity = MOCK_QUANTITY1 + mockQuantityToIncrease;
 
@@ -163,7 +156,7 @@ class StockTest
 
         // then
         final Map<String, Integer> stockMap = MOCK_STOCK.getStockMap();
-        assertEquals(stockMap.size(), 2);
+        assertEquals(2, stockMap.size());
         assertThat(stockMap, IsMapContaining.hasEntry(MOCK_ITEM1, expectedQuantity));
     }
 
@@ -179,7 +172,7 @@ class StockTest
 
         // then
         final Map<String, Integer> stockMap = MOCK_STOCK.getStockMap();
-        assertEquals(stockMap.size(), 2);
+        assertEquals(2, stockMap.size());
         assertThat(stockMap, IsMapContaining.hasEntry(MOCK_ITEM2, expectedQuantity));
     }
 
@@ -195,7 +188,7 @@ class StockTest
 
         // then
         final Map<String, Integer> stockMap = MOCK_STOCK.getStockMap();
-        assertEquals(stockMap.size(), 2);
+        assertEquals(2, stockMap.size());
         assertThat(stockMap, IsMapContaining.hasEntry(MOCK_ITEM2, expectedQuantity));
     }
 
@@ -204,7 +197,6 @@ class StockTest
     void givenInvalidItem_whenDeleteItem_thenExpectItemNotRemoved()
     {
         // given
-//        final Stock<String> MOCK_STOCK = new Stock<>(MOCK_STOCK_MAP);
 
         // when
         MOCK_STOCK.deleteItem(null);

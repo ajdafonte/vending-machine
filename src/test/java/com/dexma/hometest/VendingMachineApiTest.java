@@ -73,11 +73,11 @@ class VendingMachineApiTest
         // given
         final Map<Product, Integer> mockInputMap = new HashMap<>();
         mockInputMap.put(Beverage.SPRITE, 1);
-        doNothing().when(mockProductManager).insertProductsInStock(mockInputMap);
+        doNothing().when(mockProductManager).insertProductItemsInStock(mockInputMap);
 
         // when + then
         assertDoesNotThrow(() -> vendingMachineApi.refillProducts(mockInputMap));
-        verify(mockProductManager, times(1)).insertProductsInStock(mockInputMap);
+        verify(mockProductManager, times(1)).insertProductItemsInStock(mockInputMap);
     }
 
     @Test
@@ -85,7 +85,7 @@ class VendingMachineApiTest
     {
         // given
         final Map<Product, Integer> mockInputMap = Collections.emptyMap();
-        doThrow(ProductManagerException.class).when(mockProductManager).insertProductsInStock(mockInputMap);
+        doThrow(ProductManagerException.class).when(mockProductManager).insertProductItemsInStock(mockInputMap);
 
         // when + then
         final VendingMachineException thrown = assertThrows(VendingMachineException.class, () -> vendingMachineApi.refillProducts(mockInputMap));
@@ -250,12 +250,13 @@ class VendingMachineApiTest
     {
         // given
         final Product mockProduct = Beverage.WATER;
+        final String expectedMsg = "Product " + mockProduct.getName() + " is not available in stock.";
         when(mockProductManager.isProductItemAllowed(mockProduct)).thenReturn(true);
         when(mockProductManager.isProductItemAvailable(mockProduct)).thenReturn(false);
 
         // when + then
         final VendingMachineException thrown = assertThrows(VendingMachineException.class, () -> vendingMachineApi.selectProduct(mockProduct));
-        assertEquals("Product " + mockProduct + " is not available in stock.", thrown.getMessage());
+        assertEquals(expectedMsg, thrown.getMessage());
     }
 
     // - invalid product
@@ -264,10 +265,11 @@ class VendingMachineApiTest
     {
         // given
         when(mockProductManager.isProductItemAllowed(null)).thenReturn(false);
+        final String expectedMsg = "A valid product item should be provided.";
 
         // when + then
         final VendingMachineException thrown = assertThrows(VendingMachineException.class, () -> vendingMachineApi.selectProduct(null));
-        assertEquals("A valid product item should be provided.", thrown.getMessage());
+        assertEquals(expectedMsg, thrown.getMessage());
     }
 
     // insertCash
@@ -284,7 +286,7 @@ class VendingMachineApiTest
         final BigDecimal result = vendingMachineApi.insertCash(mockCash);
 
         // then
-        assertEquals(result, expectedCurrentBalance);
+        assertEquals(expectedCurrentBalance, result);
     }
 
     // - invalid cash item
@@ -293,10 +295,11 @@ class VendingMachineApiTest
     {
         // given
         doThrow(CashManagerException.class).when(mockCashManager).receiveCash(null);
+        final String expectedMsg = "A valid cash item should be provided.";
 
         // when + then
         final VendingMachineException thrown = assertThrows(VendingMachineException.class, () -> vendingMachineApi.insertCash(null));
-        assertEquals("A valid cash item should be provided.", thrown.getMessage());
+        assertEquals(expectedMsg, thrown.getMessage());
     }
 
     // confirmPurchase
@@ -306,10 +309,11 @@ class VendingMachineApiTest
     {
         // given
         when(mockProductManager.isProductSelected()).thenReturn(false);
+        final String expectedMsg = "Before confirm a purchase one product should be selected first.";
 
         // when + then
         final VendingMachineException thrown = assertThrows(VendingMachineException.class, () -> vendingMachineApi.confirmPurchase());
-        assertEquals("Before confirm a purchase one product should be selected first.", thrown.getMessage());
+        assertEquals(expectedMsg, thrown.getMessage());
     }
 
     // - current item selected + balance < product price
@@ -322,10 +326,11 @@ class VendingMachineApiTest
         when(mockProductManager.getSelectedProduct()).thenReturn(mockSelectedProduct);
         final BalanceResult balanceResult = BalanceResult.BELOW_AMOUNT;
         when(mockCashManager.isPossibleToPurchaseProduct(mockSelectedProduct.getPrice())).thenReturn(balanceResult);
+        final String expectedMsg = "Current balance is not enough to buy Product " + mockSelectedProduct.getName() + ".";
 
         // when + then
         final VendingMachineException thrown = assertThrows(VendingMachineException.class, () -> vendingMachineApi.confirmPurchase());
-        assertEquals("Current balance is not enough to buy Product " + mockSelectedProduct.getName() + ".", thrown.getMessage());
+        assertEquals(expectedMsg, thrown.getMessage());
     }
 
     // - current item selected + balance == product price
@@ -366,10 +371,11 @@ class VendingMachineApiTest
         final BigDecimal mockChangeToRefund = BigDecimal.valueOf(0.1);
         when(mockCashManager.calculateRemainingChange(mockSelectedProduct.getPrice())).thenReturn(mockChangeToRefund);
         when(mockCashManager.getCashItemsForChange(mockChangeToRefund)).thenReturn(null);
+        final String expectedMsg = "Not sufficient change to provide.";
 
         // when + then
         final VendingMachineException thrown = assertThrows(VendingMachineException.class, () -> vendingMachineApi.confirmPurchase());
-        assertEquals("Not sufficient change to provide.", thrown.getMessage());
+        assertEquals(expectedMsg, thrown.getMessage());
     }
 
     // - current item selected + balance > product price + available change

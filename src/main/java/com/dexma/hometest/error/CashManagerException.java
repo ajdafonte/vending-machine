@@ -1,7 +1,7 @@
 package com.dexma.hometest.error;
 
 /**
- *
+ * CashManagerException exception - Exceptions thrown by the CashManager.
  */
 public class CashManagerException extends RuntimeException
 {

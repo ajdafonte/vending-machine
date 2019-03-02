@@ -33,9 +33,9 @@ import javafx.util.Pair;
 
 
 /**
- * VendingMachineIntegrationTest class - Class that allows to test some scenarios of vending machine.
+ * VendingMachineApiIntegrationTest class - Class that allows to test some scenarios of vending machine.
  */
-class VendingMachineIntegrationTest
+class VendingMachineApiIntegrationTest
 {
     private ProductManager productManager;
     private CashManager cashManager;
@@ -358,7 +358,7 @@ class VendingMachineIntegrationTest
 
         // - user select water and see its price
         thrown = assertThrows(VendingMachineException.class, () -> vendingMachineApi.selectProduct(Beverage.COKE));
-        assertEquals("Product " + Beverage.COKE + " is not available in stock.", thrown.getMessage());
+        assertEquals("Product " + Beverage.COKE.getName() + " is not available in stock.", thrown.getMessage());
 
         // check vending machine status
         // - current balance

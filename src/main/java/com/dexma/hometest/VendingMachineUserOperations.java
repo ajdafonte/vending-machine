@@ -11,7 +11,7 @@ import javafx.util.Pair;
 
 
 /**
- *
+ * VendingMachineUserOperations interface - Describes all the user operations in a Vending Machine.
  */
 public interface VendingMachineUserOperations
 {

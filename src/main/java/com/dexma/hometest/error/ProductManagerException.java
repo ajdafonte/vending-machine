@@ -1,7 +1,7 @@
 package com.dexma.hometest.error;
 
 /**
- *
+ * ProductManagerException exception - Exceptions thrown by the ProductManager.
  */
 public class ProductManagerException extends RuntimeException
 {

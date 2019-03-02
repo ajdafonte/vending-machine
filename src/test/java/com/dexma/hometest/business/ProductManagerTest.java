@@ -47,9 +47,6 @@ class ProductManagerTest
     @Mock
     private Stock<Product> mockProductStock;
 
-    @Mock
-    private Product mockSelectedProduct;
-
     private ProductManager productManager;
 
     @BeforeEach
@@ -161,21 +158,21 @@ class ProductManagerTest
         assertThat(result, IsEmptyCollection.empty());
     }
 
-    // getProductStock -- only a getter
-
-    // insertProductsInStock
+    // insertProductItemsInStock
     // - null or empty map
     @Test
     void givenInvalidInputMap_whenInsertProductsInStock_thenThrowSpecificException()
     {
         // given
         final Map[] testCases = new Map[] {null, Collections.emptyMap()};
+        final String expectedMsg = "At least one valid product should be provided.";
 
         // when + then
         for (final Map testCase : testCases)
         {
-            final Exception thrown = assertThrows(ProductManagerException.class, () -> productManager.insertProductsInStock(testCase));
-            assertEquals(thrown.getMessage(), "At least one valid product should be provided.");
+            final ProductManagerException thrown =
+                assertThrows(ProductManagerException.class, () -> productManager.insertProductItemsInStock(testCase));
+            assertEquals(expectedMsg, thrown.getMessage());
         }
     }
 
@@ -187,10 +184,11 @@ class ProductManagerTest
         final Map<Product, Integer> mockMap = new HashMap<>();
         mockMap.put(Beverage.COKE, 1);
         mockMap.put(null, 1);
+        final String expectedMsg = "Invalid product specified.";
 
         // when + then
-        final Exception thrown = assertThrows(ProductManagerException.class, () -> productManager.insertProductsInStock(mockMap));
-        assertEquals(thrown.getMessage(), "Invalid product specified.");
+        final ProductManagerException thrown = assertThrows(ProductManagerException.class, () -> productManager.insertProductItemsInStock(mockMap));
+        assertEquals(expectedMsg, thrown.getMessage());
     }
 
     // - map with invalid quantity
@@ -201,10 +199,11 @@ class ProductManagerTest
         final Map<Product, Integer> mockMap = new HashMap<>();
         mockMap.put(Beverage.COKE, -1);
         mockMap.put(Beverage.SPRITE, 1);
+        final String expectedMsg = "Invalid quantity specified.";
 
         // when + then
-        final Exception thrown = assertThrows(ProductManagerException.class, () -> productManager.insertProductsInStock(mockMap));
-        assertEquals(thrown.getMessage(), "Invalid quantity specified.");
+        final ProductManagerException thrown = assertThrows(ProductManagerException.class, () -> productManager.insertProductItemsInStock(mockMap));
+        assertEquals(expectedMsg, thrown.getMessage());
     }
 
     // - map with all ok
@@ -218,7 +217,7 @@ class ProductManagerTest
         doNothing().when(mockProductStock).insertItem(any(Product.class), anyInt());
 
         // when + then
-        assertDoesNotThrow(() -> productManager.insertProductsInStock(mockMap));
+        assertDoesNotThrow(() -> productManager.insertProductItemsInStock(mockMap));
         verify(mockProductStock, times(1)).insertItem(Beverage.COKE, 2);
         verify(mockProductStock, times(1)).insertItem(Beverage.SPRITE, 2);
     }
@@ -230,10 +229,12 @@ class ProductManagerTest
     {
         // given
         final Product mockProduct = null;
+        final String expectedMsg = "Invalid product specified.";
 
         // when + then
-        final Exception thrown = assertThrows(ProductManagerException.class, () -> productManager.removeProductItemFromStock(mockProduct));
-        assertEquals(thrown.getMessage(), "Invalid product specified.");
+        final ProductManagerException thrown =
+            assertThrows(ProductManagerException.class, () -> productManager.removeProductItemFromStock(mockProduct));
+        assertEquals(expectedMsg, thrown.getMessage());
     }
 
     // - product allowed with quantity > 0

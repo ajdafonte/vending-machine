@@ -7,7 +7,7 @@ import com.dexma.hometest.domain.Product;
 
 
 /**
- *
+ * VendingMachineSupplierOperations interface - Describes all the supplier operations in a Vending Machine.
  */
 public interface VendingMachineSupplierOperations
 {
