@@ -20,17 +20,16 @@ public class ProductManager
     private final Stock<Product> productStock;
     private Product selectedProduct;
 
-    ProductManager(final Stock<Product> productStock, final Product selectedProduct)
+//    ProductManager(final Stock<Product> productStock, final Product selectedProduct)
+//    {
+//        this.productStock = productStock;
+//        this.selectedProduct = selectedProduct;
+//    }
+
+    public ProductManager(final Stock<Product> productStock)
     {
         this.productStock = productStock;
-        this.selectedProduct = selectedProduct;
     }
-
-//    public ProductManager()
-//    {
-//        this.productStock = new Stock<>(new HashMap<>());
-//        this.selectedProduct = null;
-//    }
 
     public boolean isProductItemAllowed(final Product product)
     {

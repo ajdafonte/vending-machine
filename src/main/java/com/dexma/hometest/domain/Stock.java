@@ -10,7 +10,7 @@ public class Stock<T>
 {
     private final Map<T, Integer> stockMap;
 
-    Stock(final Map<T, Integer> stockMap)
+    public Stock(final Map<T, Integer> stockMap)
     {
         this.stockMap = stockMap;
     }

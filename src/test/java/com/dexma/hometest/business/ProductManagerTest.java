@@ -55,7 +55,7 @@ class ProductManagerTest
     @BeforeEach
     void setUp()
     {
-        this.productManager = new ProductManager(mockProductStock, mockSelectedProduct);
+        this.productManager = new ProductManager(mockProductStock);
     }
 
     // isProductItemAllowed

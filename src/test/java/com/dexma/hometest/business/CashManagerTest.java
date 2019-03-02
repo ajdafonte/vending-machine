@@ -81,7 +81,7 @@ class CashManagerTest
     @BeforeEach
     void setUp()
     {
-        this.cashManager = new CashManager(mockCashStock, mockCurrentBalance, mockChangeProcessorFactory);
+        this.cashManager = new CashManager(mockCashStock, mockChangeProcessorFactory);
     }
 
     // getValidCashItems

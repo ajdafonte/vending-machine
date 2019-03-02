@@ -21,12 +21,11 @@ public class CashManager
     private BigDecimal currentBalance;
     private final ChangeProcessorFactory changeProcessorFactory;
 
-    CashManager(final Stock<Cash> cashStock,
-                final BigDecimal currentBalance,
-                final ChangeProcessorFactory changeProcessorFactory)
+    public CashManager(final Stock<Cash> cashStock,
+                       final ChangeProcessorFactory changeProcessorFactory)
     {
         this.cashStock = cashStock;
-        this.currentBalance = currentBalance;
+        this.currentBalance = BigDecimal.ZERO;
         this.changeProcessorFactory = changeProcessorFactory;
     }
 
@@ -171,7 +170,7 @@ public class CashManager
         return currentBalance.compareTo(BigDecimal.ZERO) > 0;
     }
 
-    BigDecimal getCurrentBalance()
+    public BigDecimal getCurrentBalance()
     {
         return this.currentBalance;
     }
