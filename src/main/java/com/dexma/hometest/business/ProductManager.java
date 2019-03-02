@@ -2,7 +2,6 @@ package com.dexma.hometest.business;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -21,17 +20,17 @@ public class ProductManager
     private final Stock<Product> productStock;
     private Product selectedProduct;
 
-    public ProductManager(final Stock<Product> productStock, final Product selectedProduct)
+    ProductManager(final Stock<Product> productStock, final Product selectedProduct)
     {
         this.productStock = productStock;
         this.selectedProduct = selectedProduct;
     }
 
-    public ProductManager()
-    {
-        this.productStock = new Stock<>(new HashMap<>());
-        this.selectedProduct = null;
-    }
+//    public ProductManager()
+//    {
+//        this.productStock = new Stock<>(new HashMap<>());
+//        this.selectedProduct = null;
+//    }
 
     public boolean isProductItemAllowed(final Product product)
     {
@@ -50,7 +49,7 @@ public class ProductManager
             .collect(Collectors.toList());
     }
 
-    public List<Product> getValidProductItems()
+    private List<Product> getValidProductItems()
     {
         return Arrays.asList(Beverage.getValidBeverages());
     }
@@ -64,14 +63,14 @@ public class ProductManager
 
     private void validateProductEntry(final Product product, final int quantity)
     {
-        if (isProductItemAllowed(product))
+        if (!isProductItemAllowed(product))
         {
-            throw new ProductManagerException("Invalid product specified!");
+            throw new ProductManagerException("Invalid product specified.");
         }
 
         if (quantity <= 0)
         {
-            throw new ProductManagerException("Invalid quantity specified!");
+            throw new ProductManagerException("Invalid quantity specified.");
         }
     }
 
@@ -79,7 +78,7 @@ public class ProductManager
     {
         if (productMap == null || productMap.isEmpty())
         {
-            throw new ProductManagerException("At least one product should be provided");
+            throw new ProductManagerException("At least one valid product should be provided.");
         }
 
         //
@@ -94,17 +93,17 @@ public class ProductManager
 
     public void removeProductItemFromStock(final Product product)
     {
-        if (isProductItemAllowed(product))
+        if (!isProductItemAllowed(product))
         {
-            throw new ProductManagerException("Invalid product specified!");
+            throw new ProductManagerException("Invalid product specified.");
         }
         productStock.deleteItem(product);
     }
 
-    public Product getProductFromStock(final Product product)
-    {
-        return productStock.getItem(product);
-    }
+//    public Product getProductFromStock(final Product product)
+//    {
+//        return productStock.getItem(product);
+//    }
 
     ///////////////////// SELECTED PRODUCT
 

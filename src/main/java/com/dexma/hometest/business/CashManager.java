@@ -2,7 +2,6 @@ package com.dexma.hometest.business;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +10,6 @@ import com.dexma.hometest.domain.Cash;
 import com.dexma.hometest.domain.Coin;
 import com.dexma.hometest.domain.Stock;
 import com.dexma.hometest.error.CashManagerException;
-import com.dexma.hometest.error.ProductManagerException;
 
 
 /**
@@ -23,23 +21,23 @@ public class CashManager
     private BigDecimal currentBalance;
     private final ChangeProcessorFactory changeProcessorFactory;
 
-    public CashManager(final Stock<Cash> cashStock,
-                       final BigDecimal currentBalance,
-                       final ChangeProcessorFactory changeProcessorFactory)
+    CashManager(final Stock<Cash> cashStock,
+                final BigDecimal currentBalance,
+                final ChangeProcessorFactory changeProcessorFactory)
     {
         this.cashStock = cashStock;
         this.currentBalance = currentBalance;
         this.changeProcessorFactory = changeProcessorFactory;
     }
 
-    public CashManager()
-    {
-        this.cashStock = new Stock<>(new HashMap<>());
-        this.currentBalance = BigDecimal.ZERO;
-        this.changeProcessorFactory = new ChangeProcessorFactory();
-    }
+//    public CashManager()
+//    {
+//        this.cashStock = new Stock<>(new HashMap<>());
+//        this.currentBalance = BigDecimal.ZERO;
+//        this.changeProcessorFactory = new ChangeProcessorFactory();
+//    }
 
-    public boolean isCashItemAllowed(final Cash cash)
+    private boolean isCashItemAllowed(final Cash cash)
     {
         return cash != null && getValidCashItems().contains(cash);
     }
@@ -58,14 +56,14 @@ public class CashManager
 
     private void validateCashEntry(final Cash cash, final int quantity)
     {
-        if (isCashItemAllowed(cash))
+        if (!isCashItemAllowed(cash))
         {
-            throw new ProductManagerException("Invalid cash specified!");
+            throw new CashManagerException("Invalid cash item specified.");
         }
 
         if (quantity <= 0)
         {
-            throw new ProductManagerException("Invalid quantity specified!");
+            throw new CashManagerException("Invalid quantity specified.");
         }
     }
 
@@ -73,7 +71,7 @@ public class CashManager
     {
         if (cashMap == null || cashMap.isEmpty())
         {
-            throw new ProductManagerException("At least one cash item should be provided");
+            throw new CashManagerException("At least one cash item should be provided.");
         }
 
         //
@@ -90,7 +88,7 @@ public class CashManager
     {
         if (cashMap == null || cashMap.isEmpty())
         {
-            throw new ProductManagerException("At least one cash item should be provided");
+            throw new CashManagerException("At least one cash item should be provided.");
         }
 
         //
@@ -141,7 +139,7 @@ public class CashManager
         }
         else
         {
-            throw new CashManagerException("A valid cash item should be provided");
+            throw new CashManagerException("A valid cash item should be provided.");
         }
         return getCurrentBalance();
     }
@@ -150,12 +148,22 @@ public class CashManager
 
     public BalanceResult isPossibleToPurchaseProduct(final BigDecimal productPrice)
     {
-        return BalanceResult.getBalanceResultByValue(productPrice.compareTo(currentBalance));
+        if (productPrice == null || productPrice.compareTo(BigDecimal.ZERO) < 0)
+        {
+            throw new CashManagerException("Invalid product price.");
+        }
+
+        return BalanceResult.getBalanceResultByValue(currentBalance.compareTo(productPrice));
     }
 
     public BigDecimal calculateRemainingChange(final BigDecimal productPrice)
     {
-        return currentBalance.subtract(productPrice);
+        if (productPrice == null || productPrice.compareTo(BigDecimal.ZERO) < 0)
+        {
+            throw new CashManagerException("Invalid product price.");
+        }
+
+        return hasCurrentBalance() ? currentBalance.subtract(productPrice) : BigDecimal.ZERO;
     }
 
     public boolean hasCurrentBalance()
@@ -163,7 +171,7 @@ public class CashManager
         return currentBalance.compareTo(BigDecimal.ZERO) > 0;
     }
 
-    public BigDecimal getCurrentBalance()
+    BigDecimal getCurrentBalance()
     {
         return this.currentBalance;
     }
@@ -173,7 +181,7 @@ public class CashManager
         currentBalance = currentBalance.add(amount);
     }
 
-    public void setCurrentBalance(final BigDecimal currentBalance)
+    void setCurrentBalance(final BigDecimal currentBalance)
     {
         this.currentBalance = currentBalance;
     }
@@ -183,10 +191,10 @@ public class CashManager
         setCurrentBalance(BigDecimal.ZERO);
     }
 
-    private void decrementCurrentBalance(final BigDecimal amount)
-    {
-        final BigDecimal finalValue = this.currentBalance.subtract(amount);
-        this.currentBalance = finalValue.compareTo(BigDecimal.ZERO) >= 0 ? finalValue : BigDecimal.ZERO;
-    }
+//    private void decrementCurrentBalance(final BigDecimal amount)
+//    {
+//        final BigDecimal finalValue = this.currentBalance.subtract(amount);
+//        this.currentBalance = finalValue.compareTo(BigDecimal.ZERO) >= 0 ? finalValue : BigDecimal.ZERO;
+//    }
 
 }

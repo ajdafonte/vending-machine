@@ -12,11 +12,11 @@ import org.junit.jupiter.api.Test;
 /**
  * BeverageTest class - Test Beverage class.
  */
-public class BeverageTest
+class BeverageTest
 {
     // test get name
     @Test
-    public void givenEnumValues_whenGetName_returnCorrectValue()
+    void givenEnumValues_whenGetName_returnCorrectValue()
     {
         assertEquals("Coke", Beverage.COKE.getName());
         assertEquals("Sprite", Beverage.SPRITE.getName());
@@ -25,7 +25,7 @@ public class BeverageTest
 
     // test get price
     @Test
-    public void givenEnumValues_whenGetPrice_returnCorrectValue()
+    void givenEnumValues_whenGetPrice_returnCorrectValue()
     {
         assertEquals(BigDecimal.valueOf(1.5), Beverage.COKE.getPrice());
         assertEquals(BigDecimal.valueOf(1.4), Beverage.SPRITE.getPrice());
@@ -34,7 +34,7 @@ public class BeverageTest
 
     // test get valid values
     @Test
-    public void givenEnumValues_whenGetValidBeverages_returnCorrectValue()
+    void givenEnumValues_whenGetValidBeverages_returnCorrectValue()
     {
         // given
         final Beverage[] expectedResult = {Beverage.COKE, Beverage.WATER, Beverage.SPRITE};

@@ -10,18 +10,18 @@ import org.junit.jupiter.api.Test;
 /**
  * ChangeProcessorFactoryTest class - ChangeProcessorFactory test class.
  */
-public class ChangeProcessorFactoryTest
+class ChangeProcessorFactoryTest
 {
     private ChangeProcessorFactory processorFactory;
 
     @BeforeEach
-    public void setUp()
+    void setUp()
     {
         this.processorFactory = new ChangeProcessorFactory();
     }
 
     @Test
-    public void given_whenGetSpecificProcessor_thenReturnCorrectProcessor()
+    void given_whenGetSpecificProcessor_thenReturnCorrectProcessor()
     {
         // given
 

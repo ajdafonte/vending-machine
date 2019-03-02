@@ -10,7 +10,7 @@ public class Stock<T>
 {
     private final Map<T, Integer> stockMap;
 
-    public Stock(final Map<T, Integer> stockMap)
+    Stock(final Map<T, Integer> stockMap)
     {
         this.stockMap = stockMap;
     }
@@ -20,13 +20,7 @@ public class Stock<T>
 //        return item != null && stockMap.containsKey(item);
 //    }
 
-    public int getQuantity(final T item)
-    {
-        final Integer quantity = stockMap.get(item);
-        return quantity == null ? 0 : quantity;
-    }
-
-    public T getItem(final T item)
+    T getItem(final T item)
     {
         return hasItem(item) ? item : null;
     }
@@ -64,9 +58,20 @@ public class Stock<T>
         return getQuantity(item) > 0;
     }
 
-    public void clearAllItems()
+    public Map<T, Integer> getStockMap()
     {
-        stockMap.clear();
+        return stockMap;
+    }
+
+//    public void clearAllItems()
+//    {
+//        stockMap.clear();
+//    }
+
+    private int getQuantity(final T item)
+    {
+        final Integer quantity = stockMap.get(item);
+        return quantity == null ? 0 : quantity;
     }
 
 //    public void putItem(final T item, final int quantity)
@@ -74,8 +79,4 @@ public class Stock<T>
 //        stockMap.put(item, quantity);
 //    }
 
-    public Map<T, Integer> getStockMap()
-    {
-        return stockMap;
-    }
 }

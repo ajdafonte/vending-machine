@@ -9,11 +9,11 @@ import org.junit.jupiter.api.Test;
 /**
  * BalanceResultTest class - Test BalanceResult enum.
  */
-public class BalanceResultTest
+class BalanceResultTest
 {
     // test getBalanceResultByValue - ok values
     @Test
-    public void givenValidIntValues_whenGetBalanceResultByValue_thenReturnCorrectValue()
+    void givenValidIntValues_whenGetBalanceResultByValue_thenReturnCorrectValue()
     {
         // given
         final int[] testCases = {
@@ -32,7 +32,7 @@ public class BalanceResultTest
 
     // test getBalanceResultByValue - nok values
     @Test
-    public void giveInvalidIntValues_whenGetBalanceResultByValue_thenReturnNullValue()
+    void giveInvalidIntValues_whenGetBalanceResultByValue_thenReturnNullValue()
     {
         // given
         final int[] testCases = {
@@ -40,9 +40,9 @@ public class BalanceResultTest
         };
 
         // when + then
-        for (int i = 0; i < testCases.length; i++)
+        for (final int testCase : testCases)
         {
-            assertNull(BalanceResult.getBalanceResultByValue(testCases[i]));
+            assertNull(BalanceResult.getBalanceResultByValue(testCase));
         }
     }
 

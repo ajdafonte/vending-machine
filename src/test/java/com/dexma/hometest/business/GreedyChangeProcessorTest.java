@@ -20,12 +20,12 @@ import com.dexma.hometest.domain.Coin;
 /**
  * GreedyChangeProcessorTest class - GreedyChangeProcessor test class.
  */
-public class GreedyChangeProcessorTest
+class GreedyChangeProcessorTest
 {
     private GreedyChangeProcessor greedyChangeProcessor;
 
     @BeforeEach
-    public void setUp()
+    void setUp()
     {
         this.greedyChangeProcessor = new GreedyChangeProcessor();
     }
@@ -56,7 +56,7 @@ public class GreedyChangeProcessorTest
     // test - cash stock with enough cash and valid changeAmount -- return change (other case)
     // test - cash stock with enough cash and valid changeAmount -- return change (other case)
     @Test
-    public void givenCashStockAndHighAmount_whenProcessChange_thenReturnCollectionWithCashAndQuantity()
+    void givenCashStockAndHighAmount_whenProcessChange_thenReturnCollectionWithCashAndQuantity()
     {
         // given
         final BigDecimal mockAmount = BigDecimal.valueOf(10);
@@ -76,7 +76,7 @@ public class GreedyChangeProcessorTest
     }
 
     @Test
-    public void givenCashStockAndLowAmount_whenProcessChange_thenReturnCollectionWithCashAndQuantity()
+    void givenCashStockAndLowAmount_whenProcessChange_thenReturnCollectionWithCashAndQuantity()
     {
         // given
         final BigDecimal mockAmount = BigDecimal.valueOf(0.75);
@@ -95,7 +95,7 @@ public class GreedyChangeProcessorTest
     }
 
     @Test
-    public void givenCashStockAndAmountEqualsToCertainCashItem_whenProcessChange_thenReturnCollectionWithCashAndQuantity()
+    void givenCashStockAndAmountEqualsToCertainCashItem_whenProcessChange_thenReturnCollectionWithCashAndQuantity()
     {
         // given
         final BigDecimal mockAmount = BigDecimal.valueOf(0.1);
@@ -112,7 +112,7 @@ public class GreedyChangeProcessorTest
     }
 
     @Test
-    public void givenCashStockAndAmountMultipleOfCashItem_whenProcessChange_thenReturnCollectionWithCashAndQuantity()
+    void givenCashStockAndAmountMultipleOfCashItem_whenProcessChange_thenReturnCollectionWithCashAndQuantity()
     {
         // given
         final BigDecimal mockAmount = BigDecimal.valueOf(8);
@@ -129,7 +129,7 @@ public class GreedyChangeProcessorTest
     }
 
     @Test
-    public void givenCashStockAndAmount_whenProcessChange_thenReturnCollectionWithCashAndQuantity()
+    void givenCashStockAndAmount_whenProcessChange_thenReturnCollectionWithCashAndQuantity()
     {
         // given
         final BigDecimal mockAmount = BigDecimal.valueOf(0.60);
@@ -148,7 +148,7 @@ public class GreedyChangeProcessorTest
 
     // test - cash stock will have some cash not available and valid changeAmount -- return change but with diff result from above
     @Test
-    public void givenCashStockWithLimitedItemsAndAmount_whenProcessChange_thenReturnCollectionWithCashAndQuantityWithoutDefaultValue()
+    void givenCashStockWithLimitedItemsAndAmount_whenProcessChange_thenReturnCollectionWithCashAndQuantityWithoutDefaultValue()
     {
         // given
         final BigDecimal mockAmount = BigDecimal.valueOf(0.60);
@@ -166,7 +166,7 @@ public class GreedyChangeProcessorTest
 
     // test - cash stock with enough cash and invalid changeAmount -- not able to return change
     @Test
-    public void givenCashStockAndInvalidAmount_whenProcessChange_thenReturnNullValue()
+    void givenCashStockAndInvalidAmount_whenProcessChange_thenReturnNullValue()
     {
         // given
         final BigDecimal[] testCases = {BigDecimal.valueOf(-1.5), BigDecimal.ZERO};
@@ -178,22 +178,22 @@ public class GreedyChangeProcessorTest
 
     // test - cash stock will have some cash not available and valid changeAmount -- not able to return change
     @Test
-    public void givenCashStockWithLimitedItemsAndAmount_whenProcessChange_thenReturnNullValue()
+    void givenCashStockWithLimitedItemsAndAmount_whenProcessChange_thenReturnNullValue()
     {
         // given
         final BigDecimal[] testCases = {BigDecimal.valueOf(20), BigDecimal.valueOf(300)};
         final Map<Cash, Integer> mockCashStockMap = generateCashStockValues(2, 2, 2, 2, 2, 2);
 
         // when + then
-        for (int i = 0; i < testCases.length; i++)
+        for (final BigDecimal testCase : testCases)
         {
-            assertNull(greedyChangeProcessor.processChange(mockCashStockMap, testCases[i]));
+            assertNull(greedyChangeProcessor.processChange(mockCashStockMap, testCase));
         }
     }
 
     // test - with null or empty cash stock and valid changeAmount - not able to return change
     @Test
-    public void givenInvalidCashStockAndAmount_whenProcessChange_thenReturnNullValue()
+    void givenInvalidCashStockAndAmount_whenProcessChange_thenReturnNullValue()
     {
         // given
         final BigDecimal mockAmount = BigDecimal.valueOf(1.5);
@@ -210,7 +210,7 @@ public class GreedyChangeProcessorTest
 
     // test - with cash stock with items = 0 and valid changeAmount - not able to return change
     @Test
-    public void givenCashStockWithEmptyItemsAndAmount_whenProcessChange_thenReturnNullValue()
+    void givenCashStockWithEmptyItemsAndAmount_whenProcessChange_thenReturnNullValue()
     {
         // given
         final BigDecimal mockAmount = BigDecimal.valueOf(1.5);

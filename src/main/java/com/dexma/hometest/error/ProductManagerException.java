@@ -11,9 +11,4 @@ public class ProductManagerException extends RuntimeException
     {
         super(message);
     }
-
-    public ProductManagerException(final String message, final Throwable cause)
-    {
-        super(message, cause);
-    }
 }

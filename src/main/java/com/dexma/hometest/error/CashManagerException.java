@@ -11,9 +11,4 @@ public class CashManagerException extends RuntimeException
     {
         super(message);
     }
-
-    public CashManagerException(final String message, final Throwable cause)
-    {
-        super(message, cause);
-    }
 }
